@@ -1,0 +1,13 @@
+basic process:
+define a grid of n dimensions
+for each grid point, assign it a gradient
+- usually done by picking a random vector from the set of vectors pointing
+  from the center to each edge of an n-cube (-1/1 on a line, corners of a square, etc)
+  - ken did this by hashing the grid point with a precomputed permutation of [0-255]
+    and using the result to pick one of the random vectors
+for the point you want to sample the noise for, find its grid cell
+for each corner of the grid cell, find the offset of the point from that corner, and dot the gradient at that corner with that offset
+interpolate adjacent results of the previous step
+- continue this down until you only get one value
+- the interpolation is "linear" but the value you interpolate at is usually calculated
+  with a "fade" function that is smooth
