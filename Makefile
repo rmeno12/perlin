@@ -1,5 +1,5 @@
 CXX = clang++
-CXXFLAGS = -Wall -Wextra -std=c++17
+CXXFLAGS = -Wall -Wextra -Wpedantic -std=c++17
 DEBUGFLAGS = -g
 
 all: main
