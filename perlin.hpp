@@ -114,7 +114,25 @@ inline T perlin_2d(T x, T y, T t = 0) {
         return perlin_3d(x, y, t);
     }
 
-    return 0.0;
+    // the grid cell (square) that (x, y) is in
+    int xi = std::floor(x);
+    int yi = std::floor(y);
+
+    T dx = x - xi;
+    T dy = y - yi;
+
+    T u = detail::fade(dx);
+    T v = detail::fade(dy);
+
+    T g00 = detail::grad(detail::hash(xi, yi, 0), dx, dy, T(0));
+    T g01 = detail::grad(detail::hash(xi, yi + 1, 0), dx, dy - 1, T(0));
+    T g10 = detail::grad(detail::hash(xi + 1, yi, 0), dx - 1, dy, T(0));
+    T g11 = detail::grad(detail::hash(xi + 1, yi + 1, 0), dx - 1, dy - 1, T(0));
+
+    T x0 = detail::lerp(u, g00, g10);
+    T x1 = detail::lerp(u, g01, g11);
+
+    return detail::lerp(v, x0, x1);
 }
 
 template <typename T>
